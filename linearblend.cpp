@@ -64,8 +64,6 @@ int main(int argc, char **argv) {
 
 	cvWaitKey(0);
 
-	cvSaveImage("out.jpg", final);
-
 	cvReleaseImage(&image1);
 	cvReleaseImage(&image2);
 	cvReleaseImage(&final);
