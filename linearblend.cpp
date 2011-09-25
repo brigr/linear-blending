@@ -10,15 +10,89 @@
  * shall be the same dimensions.
  */
 
+#include <iostream>
+
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
+
+#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <glib/gthread.h>
+
 #include <getopt.h>
+
+using namespace std;
 
 int alpha = 50;
 int doBlur = 0;
 IplImage *image1, *image2, *image3, *final;
+
+IplImage* loadImage(char *file) {
+	GdkPixbuf *pb;
+	GdkColorspace csp;
+	GError *gerror = NULL;
+	
+	IplImage *image;
+	
+	int width;
+	int height;
+	int rowstride;
+	int chans;
+	int bps;
+	
+	int x;
+	int y;
+	
+	guchar *pixels;
+	guchar *p;
+	
+	// check path
+	if(file == NULL) {
+		return NULL;
+	}
+
+	// load gdk pixbuf from file
+	pb = gdk_pixbuf_new_from_file(file, &gerror);
+	if(pb == NULL) {
+		return NULL;
+	}
+
+	// get necessary file information
+	width		= gdk_pixbuf_get_width(pb);
+	height		= gdk_pixbuf_get_height(pb);
+	rowstride	= gdk_pixbuf_get_rowstride(pb);
+	chans		= gdk_pixbuf_get_n_channels(pb);
+	bps			= gdk_pixbuf_get_bits_per_sample(pb);
+
+	csp			= gdk_pixbuf_get_colorspace(pb);
+	pixels		= gdk_pixbuf_get_pixels(pb);
+
+
+	// create opencv image structure
+	image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, chans);
+	if(image == NULL) {
+		gdk_pixbuf_unref(pb);
+		return NULL;
+	}
+
+	for(x = 0; x < width; x++) {
+		for(y = 0; y < height; y++) {
+			// read channel values from pixbuf
+			p = pixels + y * rowstride + x * chans;
+
+			// copy RGB channel values to the IplImage structure
+			cvSet2D(image, y, x, CV_RGB((int)p[0], (int)p[1], (int)p[2]));
+		}
+	}
+
+	// free memory associated with image
+	gdk_pixbuf_unref(pb);
+
+	// return structure
+	return(image);
+}
 
 void blending(int alpha) {
 	int i, j;
@@ -79,17 +153,22 @@ int main(int argc, char **argv) {
 	  }
 	}
 
-	fprintf(stderr, "input: %s\noutput: %s\n", inputImage, outputImage);
-
 	if(!inputImage || !outputImage) {
 		help();
 		exit(EXIT_FAILURE);
 	}
 	
+	// initialize gdk
+	g_thread_init(NULL);
+	g_type_init();
+
+
 	// load images
-	image1 = cvLoadImage(inputImage, 1);
+	image1 = loadImage(inputImage);
+	image3 = loadImage(outputImage);
+	
 	image2 = cvCreateImage(cvGetSize(image1), image1->depth, image1->nChannels);
-	image3 = cvLoadImage(outputImage, 1);
+	
 	if(image1 == NULL || image2 == NULL || image3 == NULL) {
 		return 1;
 	}
