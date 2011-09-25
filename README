@@ -15,6 +15,16 @@ images. You can use these in order to experiment with the
 linear-blending operator.
 
 ===========================
+| DEPENDENCIES            |
+===========================
+In order to build linear-blending you will need:
+1) the Open Computer Vision framework
+2) libgdk-dev
+
+These can be regularly found in your Linux distribution of preference. I
+tested the code by linking against OpenCV 2.3.1.
+
+===========================
 | HELP INSTRUCTIONS       |
 ===========================
 With linear-blending, you have the option to apply blurring on the
