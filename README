@@ -1,16 +1,11 @@
-This is a straightforward implementation of a linear blending operation
-between two images. The math was taught by a book of Szeliski on
-computer vision.
+This project is just a hack inspired by reading a page in Szeliski's
+book on Computer Vision applications. I read about a simple binary
+transform that can take two color images and produce an output blended
+image based on the two input images.
 
-In order to run the program, you will need OpenCV. In order to compile
-the source code, you will need to issue "make" on the root directory
-of the code...
+I was astounded by the idea that I sat down and wrote some OpenCV-based
+code to resemble this idea. So, voila!
 
-When you are done with compiling, you can run the program against a set
-of two identical images... For example, if you use a couple of images
-from the example image set, you can run
-
-./linear_blend bean1.jpg bean2.jpg
-
-By varying the "alpha" parameter using the slider, you can achive a
-certain level of image blending/morphing...
+In this project, I have included some images that I obtained from Google
+images. You can use these in order to experiment with the
+linear-blending operator.
