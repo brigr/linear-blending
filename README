@@ -1,5 +1,5 @@
 This project is just a hack inspired by reading a page in Szeliski's
-book on Computer Vision applications. I read about a simple binary
+book on Computer Vision applications, Chap. 3. I read about a simple binary
 transform that can take two color images and produce an output blended
 image based on the two input images.
 
