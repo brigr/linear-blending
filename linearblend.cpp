@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 			inputImage = strdup(optarg);
 			break;
 		
-		case 'o':
+		case 't':
 			outputImage = strdup(optarg);
 			break;
 		
@@ -78,7 +78,9 @@ int main(int argc, char **argv) {
 			exit(EXIT_SUCCESS);
 	  }
 	}
-	
+
+	fprintf(stderr, "input: %s\noutput: %s\n", inputImage, outputImage);
+
 	if(!inputImage || !outputImage) {
 		help();
 		exit(EXIT_FAILURE);
