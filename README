@@ -1,3 +1,7 @@
+==========================
+|          ABOUT         |
+==========================
+
 This project is just a hack inspired by reading a page in Szeliski's
 book on Computer Vision applications, Chap. 3. I read about a simple binary
 transform that can take two color images and produce an output blended
@@ -9,3 +13,25 @@ implementation just to see how it works in practice. And, voila!
 In this project, I have included some images that I obtained from Google
 images. You can use these in order to experiment with the
 linear-blending operator.
+
+===========================
+| HELP INSTRUCTIONS       |
+===========================
+With linear-blending, you have the option to apply blurring on the
+computed image while varying the alpha blending parameter.
+
+In order to force blurring, you will have to pass a "-b" switch on the
+command line, without passing any other command line argument...
+
+In order to specify a source and target image, you will need to specify
+"-i <input_image>" and "-t <target_image>".
+
+Let's for example assume that you have an image jbush1.jpg as your
+source image, and jbush2.jpg as your target image. Then, if you want to
+request blurring support, you issue the following command on the command
+prompt:
+
+./linearblending -b -i images/jbush1.jpg -t images/jbush2.jpg
+
+In order to come up with the desired result, you have to vary the alpha
+parameter from the popped-up highgui window.
