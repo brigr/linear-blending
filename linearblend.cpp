@@ -10,10 +10,14 @@
  * shall be the same dimensions.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
+#include <getopt.h>
 
 int alpha = 50;
+int doBlur = 0;
 IplImage *image1, *image2, *image3, *final;
 
 void blending(int alpha) {
@@ -34,39 +38,86 @@ void blending(int alpha) {
         }
     }
 	
+	// do some optional blurring
+	if(doBlur)
+		cvSmooth(final, final, CV_GAUSSIAN);
+	
 	cvShowImage("Blended image", final);
 }
 
+void help() {
+	fprintf(stderr, "(C) Copyright 2011. All rights reserved. Sotiris L Karavarsamis."
+					"linear-blend help:\n"
+					"-b\tforce blurring of output image\n"
+					"-i\tspecify input image\n"
+					"-t\tspecify target image\n");
+}
+
 int main(int argc, char **argv) {
-	if(argc != 3) {
-		fprintf(stderr, "%s <image-1> <image-2>\n", argv[0]);
-		return 1;
+	int c;
+	char *inputImage = NULL;
+	char *outputImage = NULL;
+
+	while((c = getopt(argc, argv, "hbi:t:")) != -1) {
+	  switch(c) {
+		case 'b':
+			doBlur = 1;
+			break;
+
+		case 'i':
+			inputImage = strdup(optarg);
+			break;
+
+		case 'o':
+			outputImage = strdup(optarg);
+			break;
+		
+		case 'h':
+			help();
+			exit(EXIT_SUCCESS);
+			
+		default:
+			abort();
+	  }
 	}
 	
+	if(!inputImage || !outputImage) {
+		help();
+		exit(EXIT_FAILURE);
+	}
+
 	// load images
-	image1 = cvLoadImage(argv[1], 1);
+	image1 = cvLoadImage(inputImage, 1);
 	image2 = cvCreateImage(cvGetSize(image1), image1->depth, image1->nChannels);
-	image3 = cvLoadImage(argv[2], 1);
+	image3 = cvLoadImage(outputImage, 1);
 	if(image1 == NULL || image2 == NULL || image3 == NULL) {
 		return 1;
 	}
 	
+	// equalize image sizes
 	cvResize(image3, image2);
-
+	
+	// copy image
 	final = cvCloneImage(image1);
 	
+	// create highgui window
 	cvNamedWindow("Blended image", 1);
 	cvShowImage("Blended image", final);
 
+	// create slider
     cvCreateTrackbar("Alpha", "Blended image", &alpha, 100, blending);
 
+	// initialize view
 	blending(alpha);
-
+	
+	// wait for ESC key
 	cvWaitKey(0);
-
+	
+	// release image memory
 	cvReleaseImage(&image1);
 	cvReleaseImage(&image2);
 	cvReleaseImage(&final);
 	
+	// return to the operating system
 	return 1;
 }
