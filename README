@@ -3,8 +3,8 @@ book on Computer Vision applications, Chap. 3. I read about a simple binary
 transform that can take two color images and produce an output blended
 image based on the two input images.
 
-I was astounded by the idea that I sat down and wrote some OpenCV-based
-code to resemble this idea. So, voila!
+I was just astounded by the idea that I instantly sat down and wrote an OpenCV-based
+implementation just to see how it works in practice. And, voila!
 
 In this project, I have included some images that I obtained from Google
 images. You can use these in order to experiment with the
