@@ -1,7 +1,7 @@
 /**
  * (C) Copyright 2011. All rights are reserved. Sotiris L Karavarsamis.
  * Given two identical in size images, the code creates a morph images
- * by combining the colors of the two images.
+ * by combining the color information contained in the two images.
  *
  * Compiling is straightforward: use "make" in order to build the
  * source.
@@ -101,10 +101,10 @@ int main(int argc, char **argv) {
 	// create highgui window
 	cvNamedWindow("Blended image", 1);
 	cvShowImage("Blended image", final);
-
+	
 	// create slider
-    cvCreateTrackbar("Alpha", "Blended image", &alpha, 100, blending);
-
+	cvCreateTrackbar("Alpha", "Blended image", &alpha, 100, blending);
+	
 	// initialize view
 	blending(alpha);
 	
