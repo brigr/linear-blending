@@ -40,13 +40,13 @@ void blending(int alpha) {
 	
 	// do some optional blurring
 	if(doBlur)
-		cvSmooth(final, final, CV_GAUSSIAN);
+		cvSmooth(final, final, CV_BLUR, 3, 3);
 	
 	cvShowImage("Blended image", final);
 }
 
 void help() {
-	fprintf(stderr, "(C) Copyright 2011. All rights reserved. Sotiris L Karavarsamis."
+	fprintf(stderr,	"(C) Copyright 2011. All rights reserved. Sotiris L Karavarsamis.\n"
 					"linear-blend help:\n"
 					"-b\tforce blurring of output image\n"
 					"-i\tspecify input image\n"
@@ -55,19 +55,20 @@ void help() {
 
 int main(int argc, char **argv) {
 	int c;
+
 	char *inputImage = NULL;
 	char *outputImage = NULL;
 
-	while((c = getopt(argc, argv, "hbi:t:")) != -1) {
+	while((c = getopt(argc, argv, "i:t:hb")) != -1) {
 	  switch(c) {
 		case 'b':
 			doBlur = 1;
 			break;
-
+		
 		case 'i':
 			inputImage = strdup(optarg);
 			break;
-
+		
 		case 'o':
 			outputImage = strdup(optarg);
 			break;
@@ -75,9 +76,6 @@ int main(int argc, char **argv) {
 		case 'h':
 			help();
 			exit(EXIT_SUCCESS);
-			
-		default:
-			abort();
 	  }
 	}
 	
@@ -85,7 +83,7 @@ int main(int argc, char **argv) {
 		help();
 		exit(EXIT_FAILURE);
 	}
-
+	
 	// load images
 	image1 = cvLoadImage(inputImage, 1);
 	image2 = cvCreateImage(cvGetSize(image1), image1->depth, image1->nChannels);
