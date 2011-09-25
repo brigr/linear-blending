@@ -1,0 +1,16 @@
+This is a straightforward implementation of a linear blending operation
+between two images. The math was taught by a book of Szeliski on
+computer vision.
+
+In order to run the program, you will need OpenCV. In order to compile
+the source code, you will need to issue "make" on the root directory
+of the code...
+
+When you are done with compiling, you can run the program against a set
+of two identical images... For example, if you use a couple of images
+from the example image set, you can run
+
+./linear_blend bean1.jpg bean2.jpg
+
+By varying the "alpha" parameter using the slider, you can achive a
+certain level of image blending/morphing...
