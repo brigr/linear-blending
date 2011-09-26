@@ -162,9 +162,11 @@ int main(int argc, char **argv) {
 	image1 = loadImage(inputImage);
 	image3 = loadImage(outputImage);
 	
+	// create intermediate morph image
 	image2 = cvCreateImage(cvGetSize(image1), image1->depth, image1->nChannels);
 	
-	if(image1 == NULL || image2 == NULL || image3 == NULL) {
+	// check if loading/creation went ok
+	if(!image1 || !image2 || !image3) {
 		return 1;
 	}
 	
