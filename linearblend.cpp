@@ -1,13 +1,8 @@
 /**
  * (C) Copyright 2011. All rights are reserved. Sotiris L Karavarsamis.
- * Given two identical in size images, the code creates a morph images
- * by combining the color information contained in the two images.
- *
- * Compiling is straightforward: use "make" in order to build the
- * source.
  * 
- * To run the code, use "./linear_blend <image1> <image2>". The images
- * shall be the same dimensions.
+ * Given two identical-in-size images, the code creates a morph image
+ * by combining the color information of the two original input images.
  */
 
 #include <iostream>
