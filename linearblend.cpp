@@ -111,7 +111,7 @@ void blending(int alpha) {
 	if(doBlur)
 		cvSmooth(final, final, CV_BLUR, 3, 3);
 	
-	cvShowImage("Blended image", final);
+	cvShowImage("Blender", final);
 }
 
 void help() {
@@ -177,11 +177,11 @@ int main(int argc, char **argv) {
 	final = cvCloneImage(image1);
 	
 	// create highgui window
-	cvNamedWindow("Blended image", 1);
-	cvShowImage("Blended image", final);
+	cvNamedWindow("Blender", 1);
+	cvShowImage("Blender", final);
 	
 	// create slider
-	cvCreateTrackbar("Alpha", "Blended image", &alpha, 100, blending);
+	cvCreateTrackbar("Alpha", "Blender", &alpha, 100, blending);
 	
 	// initialize view
 	blending(alpha);
