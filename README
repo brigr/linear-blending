@@ -52,5 +52,9 @@ prompt:
 In order to come up with the desired result, you have to vary the alpha
 parameter from the popped-up highgui window.
 
+If you need to produce a series of consecutive image frames produced by
+varying the alpha parameter in the whole of its range, you must supply a
+-p switch on the command line.
+
 Forward any queries to
 - Sotiris Karavarsamis (s.karavarsamis@gmail.com)
