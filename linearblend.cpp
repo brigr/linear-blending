@@ -22,6 +22,7 @@ using namespace std;
 
 int alpha = 50;
 int doBlur = 0;
+int produceSlides = 0;
 IplImage *image1, *image2, *image3, *final;
 
 IplImage* loadImage(char *file) {
@@ -91,7 +92,8 @@ IplImage* loadImage(char *file) {
 
 void blending(int alpha) {
 	int i, j;
-	
+	char buff[1024];
+
 	for(i = 0; i < image1->width; i++) {
         for(j = 0; j < image1->height; j++) {
             // get pixel
@@ -111,7 +113,12 @@ void blending(int alpha) {
 	if(doBlur)
 		cvSmooth(final, final, CV_BLUR, 3, 3);
 	
-	cvShowImage("Blender", final);
+	if(produceSlides == 0) {
+		cvShowImage("Blender", final);
+	}
+
+	sprintf(buff, "image_%03d.jpg", alpha);
+	cvSaveImage(buff, final);
 }
 
 void help() {
@@ -127,9 +134,14 @@ int main(int argc, char **argv) {
 
 	char *inputImage = NULL;
 	char *outputImage = NULL;
+	int produceSlides = 0;
 
-	while((c = getopt(argc, argv, "i:t:hb")) != -1) {
+	while((c = getopt(argc, argv, "i:t:hbp:")) != -1) {
 	  switch(c) {
+		case 'p':
+			produceSlides = atoi(optarg);
+			break;
+
 		case 'b':
 			doBlur = 1;
 			break;
@@ -184,10 +196,22 @@ int main(int argc, char **argv) {
 	cvCreateTrackbar("Alpha", "Blender", &alpha, 100, blending);
 	
 	// initialize view
-	blending(alpha);
-	
+	if(produceSlides == 1) {
+		cout << "Producing 100 consecutive frames..." << endl;
+
+		// produce 100 consecutive frames
+		for(int i = 0; i < 100; i++) {
+			cout << "slide " << i << endl;
+			blending(i);
+		}
+
+	} else {
+		blending(alpha);
+	}
+
 	// wait for ESC key
-	cvWaitKey(0);
+	if(!produceSlides)
+	   cvWaitKey(0);
 	
 	// release image memory
 	cvReleaseImage(&image1);
