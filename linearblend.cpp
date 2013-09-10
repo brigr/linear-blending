@@ -51,11 +51,13 @@ IplImage* loadImage(char *file) {
 	if(file == NULL) {
 		return NULL;
 	}
+
 	
 	// load gdk pixbuf from file
 	pb = gdk_pixbuf_new_from_file(file, &gerror);
 	if(pb == NULL) {
-		return NULL;
+	   fprintf(stderr, "gdk_pixbuf_new_from_file: error loading image %s\n", file);
+	   return NULL;
 	}
 	
 	// get necessary file information
@@ -70,10 +72,12 @@ IplImage* loadImage(char *file) {
 
 
 	// create opencv image structure
+	fprintf(stderr, "creating CvImage instance, w=%d,h=%d\n", width, height);
+	
 	image = cvCreateImage(cvSize(width, height), IPL_DEPTH_8U, chans);
 	if(image == NULL) {
-		gdk_pixbuf_unref(pb);
-		return NULL;
+	   g_object_unref(pb);
+	   return NULL;
 	}
 
 	for(x = 0; x < width; x++) {
@@ -87,7 +91,7 @@ IplImage* loadImage(char *file) {
 	}
 	
 	// free memory associated with image
-	gdk_pixbuf_unref(pb);
+	g_object_unref(pb);
 	
 	// return structure
 	return(image);
@@ -180,8 +184,11 @@ int main(int argc, char **argv) {
 		exit(EXIT_FAILURE);
 	}
 	
+	fprintf(stderr, "%s, %s\n", inputImage, outputImage);
+	
+	
 	// initialize gdk
-	g_thread_init(NULL);
+	//g_thread_init(NULL);
 	g_type_init();
 
 
@@ -189,6 +196,11 @@ int main(int argc, char **argv) {
 	image1 = loadImage(inputImage);
 	image3 = loadImage(outputImage);
 	
+	if(!image1 || !image2) {
+	   fprintf(stderr, "Error loading images!\n");
+	   return 1;
+	}
+		
 	// create intermediate morph image
 	image2 = cvCreateImage(cvGetSize(image1), image1->depth, image1->nChannels);
 	
